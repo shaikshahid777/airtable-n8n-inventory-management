@@ -50,7 +50,7 @@ The supplied assessment PDF contains the project screenshots and validation evid
 
 ### Live Resources
 
-- [Airtable Base](https://airtable.com/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/viwyqYFr8QfnfVzmN?blocks=hide)
+- [Airtable Base](https://airtable.com/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/viwyqYfr8QfnfVzmN?blocks=hide)
 - [n8n Workflow](https://mohammad-shaheed.app.n8n.cloud/workflow/PLpnQooPznafZZxU)
 - [Loom Demo](https://www.loom.com/share/13b4bb591c2349e3b48ef9aab666e7d4)
 - [GitHub Repository](https://github.com/shaikshahid777/airtable-n8n-inventory-management)
