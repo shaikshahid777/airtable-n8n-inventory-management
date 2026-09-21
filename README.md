@@ -1,74 +1,169 @@
-# Airtable Inventory Management & Automation
+# ⚡ Airtable Inventory Management & Automation
 
-A technical assessment project demonstrating a no-code relational inventory database in Airtable integrated with n8n through the Airtable REST API.
+<p align="center"><strong>No-Code Relational Inventory • Airtable REST API • n8n Automation</strong></p>
 
-## Airtable Database
+<p align="center">
+<a href="https://airtable.com/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/viwyqYFr8QfnfVzmN?blocks=hide">🗃️ Open Airtable</a> ·
+<a href="https://mohammad-shaheed.app.n8n.cloud/workflow/PLpnQooPznafZZxU">⚙️ Open n8n Workflow</a> ·
+<a href="https://www.loom.com/share/13b4bb591c2349e3b48ef9aab666e7d4">🎥 Watch Demo</a> ·
+<a href="./docs/PROJECT-DOCUMENTATION.md">📘 Documentation</a>
+</p>
+
+<p align="center">
+<img src="https://img.shields.io/badge/Airtable-Database-18BFFF?style=for-the-badge" alt="Airtable">
+<img src="https://img.shields.io/badge/n8n-Automation-EA4B71?style=for-the-badge" alt="n8n">
+<img src="https://img.shields.io/badge/REST%20API-Integrated-111827?style=for-the-badge" alt="REST API">
+<img src="https://img.shields.io/badge/Status-Tested-16A34A?style=for-the-badge" alt="Tested">
+</p>
+
+---
+
+## 🎯 Project Snapshot
+
+This project demonstrates a relational inventory system in Airtable connected to n8n through REST API calls.
+
+### Core capabilities
+
+- Relational Inventory and Suppliers tables
+- Linked supplier records
+- Inventory retrieval through Airtable REST API
+- Supplier retrieval through Airtable REST API
+- Programmatic inventory record creation
+- Low-stock filtering with the formula {Qty}<10
+- Inventory quantity update and validation
+- Product image attachment evidence
+
+The supplied technical assessment report documents the implementation and screenshots across five pages. fileciteturn4file0L2-L9
+
+## 🧩 Architecture
+
+<pre>
+Manual Trigger
+      │
+      ├── GET Inventory Records ────────► Airtable Inventory
+      │
+      ├── GET Supplier Records ─────────► Airtable Suppliers
+      │
+      ├── POST Create Inventory Record ─► Airtable Inventory
+      │
+      ├── GET Low Stock Inventory ──────► Airtable Inventory
+      │
+      └── PATCH Update Quantity ────────► Airtable Inventory
+
+Supplier Link: Inventory ──────────────► Suppliers
+</pre>
+
+## 🗃️ Airtable Data Model
 
 ### Inventory
-- Product Name — Single Line Text
-- Qty — Number
-- Price — Currency
-- Product Image — Attachment
-- Status — Single Select
-- Supplier Link — Linked Record
+
+| Field | Type | Purpose |
+|---|---|---|
+| Product Name | Single line text | Product identifier |
+| Qty | Number | Current stock quantity |
+| Price | Currency | Unit price |
+| Product Image | Attachment | Product visual |
+| Status | Single select | Stock condition |
+| Supplier Link | Linked record | Related supplier |
 
 ### Suppliers
-- Supplier Name
-- Contact Email
-- Linked Inventory records
 
-The Supplier Link field connects inventory products to their associated supplier records.
+| Field | Type | Purpose |
+|---|---|---|
+| Supplier Name | Text | Supplier identifier |
+| Contact Email | Email | Supplier contact |
+| Inventory | Linked records | Related inventory |
 
-## n8n Workflow
+The assessment documentation identifies Supplier Link as a linked-record field and documents the database schema. fileciteturn4file0L24-L34
 
-Workflow: **Airtable - Get Inventory Records**
+## ⚙️ n8n Workflow
 
-Nodes:
-1. Manual Trigger
-2. Get Inventory Records
-3. Get Supplier Records
-4. Create Inventory Record
-5. Get Low Stock Inventory
-6. Update Test Inventory Quantity
+**Workflow:** Airtable - Get Inventory Records
 
-### Validation
+| Node | Method | Function |
+|---|---|---|
+| Manual Trigger | — | Starts the workflow |
+| Get Inventory Records | GET | Retrieves inventory |
+| Get Supplier Records | GET | Retrieves suppliers |
+| Create Inventory Record | POST | Creates a test inventory item |
+| Get Low Stock Inventory | GET | Filters Qty below 10 |
+| Update Test Inventory Quantity | PATCH | Updates the test record |
 
-The test product **Test Wireless Keyboard** was created with Qty 5, Price 49.99, Status Low Stock, and linked to Acme Industrial Supplies.
+The exported workflow confirms these six nodes and their connections from the manual trigger. fileciteturn4file1L143-L171
 
-The low-stock query uses:
-`{Qty}<10`
+## 🔍 Validation Scenario
 
-After updating the quantity from 5 to 15, the low-stock query returned an empty records array.
+### 01 — Create
 
-The final test record also contains the image attachment **600x400.png**.
+**Test Wireless Keyboard**
 
-## Links
+- Qty: 5
+- Price: 49.99
+- Status: Low Stock
+- Supplier: Acme Industrial Supplies
 
-- [Airtable Base](https://airtable.com/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/viwyqYfr8QfnfVzmN?blocks=hide)
-- [n8n Workflow](https://mohammad-shaheed.app.n8n.cloud/workflow/PLpnQooPznafZZxU)
-- [Loom Demo](https://www.loom.com/share/13b4bb591c2349e3b48ef9aab666e7d4)
-- [Technical Documentation PDF](./docs/Airtable-Inventory-Management-Automation-Technical-Documentation.pdf)
+The workflow POST node creates this test record with the supplier relationship. fileciteturn4file1L60-L67
 
-## Repository Structure
+### 02 — Detect Low Stock
 
-```
-airtable-n8n-inventory-management/
-├── README.md
-├── n8n/
-│   └── Airtable-Get-Inventory-Records.json
-├── docs/
-│   └── Airtable-Inventory-Management-Automation-Technical-Documentation.pdf
-├── screenshots/
-│   ├── 01-workflow-overview.png
-│   ├── 02-get-inventory-records.png
-│   ├── 03-get-supplier-records.png
-│   ├── 04-create-inventory-record.png
-│   ├── 05-low-stock-result.png
-│   ├── 06-update-quantity-result.png
-│   └── 07-final-low-stock-empty.png
-└── .gitignore
-```
+Filter formula:
 
-## Security
+    {Qty}<10
 
-Never commit Airtable Personal Access Tokens, API keys, passwords, or other secrets.
+The low-stock node sends this formula to Airtable as a query parameter. fileciteturn4file1L86-L103
+
+### 03 — Update
+
+The test quantity is updated from 5 to 15 using PATCH. fileciteturn4file1L117-L129
+
+### 04 — Validate
+
+After the update, the low-stock query returns an empty records array.
+
+This validates that the test record no longer satisfies the less-than-10 condition.
+
+## 🖼️ Evidence
+
+The project evidence sequence is:
+
+1. Workflow overview
+2. Inventory GET output
+3. Supplier GET output
+4. Create record output
+5. Low-stock query
+6. Quantity update
+7. Final empty low-stock result
+
+The submitted assessment PDF contains visual evidence for workflow architecture, supplier integration, inventory retrieval, record creation, filtering, and quantity validation. fileciteturn4file0L18-L22 fileciteturn4file0L38-L48
+
+## 🔗 Quick Access
+
+| Resource | Open |
+|---|---|
+| 🗃️ Airtable Base | [Open Airtable →](https://airtable.com/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/viwyqYFr8QfnfVzmN?blocks=hide) |
+| ⚙️ n8n Workflow | [Open n8n →](https://mohammad-shaheed.app.n8n.cloud/workflow/PLpnQooPznafZZxU) |
+| 🎥 Loom Demo | [Watch Demo →](https://www.loom.com/share/13b4bb591c2349e3b48ef9aab666e7d4) |
+| 📘 Technical Documentation | [Open Documentation →](./docs/PROJECT-DOCUMENTATION.md) |
+| 🧩 n8n JSON Export | [Open Workflow JSON →](./n8n/Airtable-Get-Inventory-Records.json) |
+
+## 📁 Repository Structure
+
+    airtable-n8n-inventory-management/
+    ├── README.md
+    ├── .gitignore
+    ├── n8n/
+    │   └── Airtable-Get-Inventory-Records.json
+    ├── docs/
+    │   └── PROJECT-DOCUMENTATION.md
+    └── screenshots/
+        └── README.md
+
+## 🔐 Security
+
+No Airtable Personal Access Token, API key, password, or secret value is intentionally documented here.
+
+The n8n workflow references an Airtable credential by credential name; the actual token remains inside n8n. fileciteturn4file1L30-L33
+
+---
+
+<p align="center"><strong>Built as a technical assessment project using Airtable + n8n.</strong></p>
