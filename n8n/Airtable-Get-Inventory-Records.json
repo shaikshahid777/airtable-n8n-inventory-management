@@ -1,0 +1,189 @@
+{
+  "name": "Airtable - Get Inventory Records",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "28b13588-0c33-456d-a390-4ea39b475404",
+      "name": "When clicking Test workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.airtable.com/v0/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "options": {}
+      },
+      "id": "6f9b96c1-2a36-43c7-b394-36ea08acdc24",
+      "name": "Get Inventory Records",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LYxR9Gp315EixDsY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.airtable.com/v0/appnfSULdENuSD8IG/tblwOCsqd1QLAl0Ye",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "options": {}
+      },
+      "id": "a12cbce8-2612-4901-a105-ad5145d6ae9a",
+      "name": "Get Supplier Records",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        144
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LYxR9Gp315EixDsY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.airtable.com/v0/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"fields\": {\n    \"Product Name\": \"Test Wireless Keyboard\",\n    \"Qty\": 5,\n    \"Price\": 49.99,\n    \"Status\": \"Low Stock\",\n    \"Supplier Link\": [\"rec68HnjKv8vZ7t8Y\"]\n  }\n}",
+        "options": {}
+      },
+      "id": "e439c16a-a1c1-4d07-80c1-8b43d1699da4",
+      "name": "Create Inventory Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        336
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LYxR9Gp315EixDsY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.airtable.com/v0/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filterByFormula",
+              "value": "{Qty}<10"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a98639a-8218-4f05-93ff-bee13ecf331e",
+      "name": "Get Low Stock Inventory",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        528
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LYxR9Gp315EixDsY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "https://api.airtable.com/v0/appnfSULdENuSD8IG/tbloqBHmv8NNK7shp/recTFyTn6J98zZCcP",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"fields\": {\n    \"Qty\": 15\n  }\n}",
+        "options": {}
+      },
+      "id": "5428505c-c6cf-4da8-8c10-8d6916fc919d",
+      "name": "Update Test Inventory Quantity",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        720
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LYxR9Gp315EixDsY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking Test workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Inventory Records",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Supplier Records",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Inventory Record",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Low Stock Inventory",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Test Inventory Quantity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b0eabcbb-3c42-467b-971d-3d193bfaed7a",
+  "meta": {
+    "instanceId": "6abe9931809978352319cb21622ffdff38accce530bfc6c488633e9f18461d78"
+  },
+  "nodeGroups": [],
+  "id": "PLpnQooPznafZZxU",
+  "tags": []
+}
